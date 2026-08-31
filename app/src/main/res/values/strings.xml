@@ -1,0 +1,12 @@
+    <resources>
+        <string name="app_name">MediTrack Pro</string>
+
+        <!-- Content descriptions for accessibility -->
+        <string name="cd_go_back">Go back</string>
+        <string name="cd_edit_medicine">Edit medicine</string>
+        <string name="cd_delete_medicine">Delete medicine</string>
+        <string name="cd_take_photo">Take photo</string>
+        <string name="cd_cancel">Cancel</string>
+        <string name="cd_captured_image">Captured prescription photo</string>
+        <string name="cd_save">Save</string>
+    </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.meditrackpro.HomeFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/medicationsFragment"
+        android:name="com.example.meditrackpro.MedicationsFragment"
+        android:label="Medications" />
+
+    <fragment
+        android:id="@+id/healthFragment"
+        android:name="com.example.meditrackpro.HealthFragment"
+        android:label="Health" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.meditrackpro.ProfileFragment"
+        android:label="Profile" />
+
+</navigation>

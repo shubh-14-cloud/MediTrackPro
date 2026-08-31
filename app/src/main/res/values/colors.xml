@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#0A0F1E</color>
+    <color name="surface">#111827</color>
+    <color name="card">#1A2235</color>
+    <color name="accent">#FFFFFF</color>
+    <color name="accent_soft">#1AFFFFFF</color>
+    <color name="warning">#FF6B6B</color>
+    <color name="gold">#FFFFFF</color>
+    <color name="blue_accent">#FFFFFF</color>
+    <color name="purple_accent">#FFFFFF</color>
+    <color name="text_primary">#F0F4FF</color>
+    <color name="text_secondary">#8B9DC3</color>
+    <color name="white">#FFFFFF</color>
+    <!-- Semantic card backgrounds -->
+    <color name="card_teal_dark">#0D2B2B</color>
+    <color name="card_dark_red">#1A0000</color>
+    <color name="card_warn_dark">#2B1A1A</color>
+    <color name="card_danger_dark">#2B1A1A</color>
+    <color name="divider_danger">#3B2A2A</color>
+    <color name="card_danger_bg">#2B1A1A</color>
+    <!-- Camera overlay backgrounds (with alpha) -->
+    <color name="overlay_dark_80">#CC000000</color>
+    <color name="overlay_dark_87">#DD000000</color>
+    <!-- Light theme card background -->
+    <color name="card_light">#F0F4FF</color>
+    <!-- Light theme colors -->
+    <color name="bg_light">#F0F4FF</color>
+    <color name="surface_light">#E2E8F5</color>
+    <color name="card_light_glass">#DDEEFF</color>
+    <color name="text_primary_light">#0A0F1E</color>
+    <color name="text_secondary_light">#4A5568</color>
+    <color name="glass_white_22">#38FFFFFF</color>
+    <!-- Glassmorphism colors -->
+    <color name="glass_fill_dark">#1AFFFFFF</color>
+    <color name="glass_fill_medium">#26FFFFFF</color>
+    <color name="glass_fill_light">#E8FFFFFF</color>
+    <color name="glass_border_dark">#33FFFFFF</color>
+    <color name="glass_border_light">#40000000</color>
+    <color name="glass_highlight">#4DFFFFFF</color>
+    <color name="gradient_start_dark">#0D1117</color>
+    <color name="gradient_end_dark">#1A1F2E</color>
+    <color name="gradient_start_light">#E8EDF5</color>
+    <color name="gradient_end_light">#F0F4FF</color>
+</resources>
