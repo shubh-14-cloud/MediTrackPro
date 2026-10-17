@@ -3,7 +3,6 @@ package com.example.meditrackpro;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
@@ -94,9 +92,7 @@ public class ProfileFragment extends Fragment {
         });
 
         // Edit health info
-        TextView tvEdit = view.findViewById(R.id.tvEditHealthInfo);
-        tvEdit.setTextColor(Color.WHITE);
-        tvEdit.setOnClickListener(v ->
+        view.findViewById(R.id.tvEditHealthInfo).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), EditHealthInfoActivity.class)));
 
         // Caregiver card
@@ -106,8 +102,12 @@ public class ProfileFragment extends Fragment {
         // Settings rows
         view.findViewById(R.id.settingNotifications).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), NotificationSettingsActivity.class)));
+        view.findViewById(R.id.settingLocation).setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), LocationActivity.class)));
         view.findViewById(R.id.settingPrivacy).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), PrivacySettingsActivity.class)));
+        view.findViewById(R.id.settingRemedies).setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), RemediesActivity.class)));
         view.findViewById(R.id.settingEmergency).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), EmergencyContactsActivity.class)));
         view.findViewById(R.id.settingAppearance).setOnClickListener(v ->
@@ -157,29 +157,24 @@ public class ProfileFragment extends Fragment {
         String conditions = prefs.getString("conditions", "");
         if (conditions == null) conditions = "";
         if (!conditions.isEmpty()) {
-            List<int[]> colors = Arrays.asList(
-                    new int[]{R.drawable.pill_blue_bg, R.color.blue_accent},
-                    new int[]{R.drawable.pill_warning_bg, R.color.warning},
-                    new int[]{R.drawable.pill_purple_bg, R.color.purple_accent},
-                    new int[]{R.drawable.pill_accent_bg, R.color.accent}
-            );
             String[] conditionArray = conditions.split(",");
-            for (int index = 0; index < conditionArray.length; index++) {
-                String trimmed = conditionArray[index].trim();
+            for (String condition : conditionArray) {
+                String trimmed = condition.trim();
                 if (!trimmed.isEmpty()) {
                     TextView badge = new TextView(requireContext());
                     badge.setText(trimmed);
                     badge.setTextSize(12f);
                     badge.setTypeface(null, Typeface.BOLD);
-                    int[] colorPair = colors.get(index % colors.size());
-                    badge.setBackgroundResource(colorPair[0]);
-                    badge.setTextColor(getResources().getColor(colorPair[1], null));
-                    badge.setPadding(24, 8, 24, 8);
+                    badge.setBackgroundResource(R.drawable.bg_badge);
+                    badge.setTextColor(UiHelper.color(requireContext(), R.color.accent));
+                    int h = UiHelper.dp(requireContext(), 10);
+                    int v = UiHelper.dp(requireContext(), 4);
+                    badge.setPadding(h, v, h, v);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMarginEnd(8);
+                    params.setMarginEnd(UiHelper.dp(requireContext(), 8));
                     badge.setLayoutParams(params);
                     conditionsLayout.addView(badge);
                 }

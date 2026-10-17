@@ -2,8 +2,6 @@ package com.example.meditrackpro;
 
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,11 +26,6 @@ public class EditHealthInfoActivity extends BaseActivity {
         AppThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_health_info);
-
-        ColorStateList glassActive = ColorStateList.valueOf(Color.argb(80, 255, 255, 255));
-        ColorStateList surfaceList = ColorStateList.valueOf(getResources().getColor(R.color.surface, null));
-        int white = Color.WHITE;
-        int semiWhite = Color.argb(160, 255, 255, 255);
 
         SharedPreferences prefs = SecurePrefs.get(this, PrefsConstants.HEALTH_INFO_PREFS);
 
@@ -66,30 +59,29 @@ public class EditHealthInfoActivity extends BaseActivity {
         selectedBloodType = prefs.getString("blood_type", "");
         if (selectedBloodType == null) selectedBloodType = "";
 
-        btnSave.setTextColor(white);
-        updateBloodTypeButtons(bloodTypeMap, selectedBloodType, glassActive, surfaceList, white, semiWhite);
+        updateBloodTypeButtons(bloodTypeMap, selectedBloodType);
 
         for (Map.Entry<Integer, String> entry : bloodTypeMap.entrySet()) {
             int id = entry.getKey();
             String type = entry.getValue();
             findViewById(id).setOnClickListener(v -> {
                 selectedBloodType = type;
-                updateBloodTypeButtons(bloodTypeMap, type, glassActive, surfaceList, white, semiWhite);
+                updateBloodTypeButtons(bloodTypeMap, type);
             });
         }
 
-        updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther, glassActive, surfaceList, white, semiWhite);
+        updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther);
         btnMale.setOnClickListener(v -> {
             selectedGender = "Male";
-            updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther, glassActive, surfaceList, white, semiWhite);
+            updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther);
         });
         btnFemale.setOnClickListener(v -> {
             selectedGender = "Female";
-            updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther, glassActive, surfaceList, white, semiWhite);
+            updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther);
         });
         btnOther.setOnClickListener(v -> {
             selectedGender = "Other";
-            updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther, glassActive, surfaceList, white, semiWhite);
+            updateGenderButtons(selectedGender, btnMale, btnFemale, btnOther);
         });
 
         // DOB — opens DatePickerDialog on tap
@@ -97,6 +89,7 @@ public class EditHealthInfoActivity extends BaseActivity {
             Calendar cal = Calendar.getInstance();
             DatePickerDialog dlg = new DatePickerDialog(
                     this,
+                    R.style.Theme_App_Picker,
                     (view, year, month, day) -> {
                         String formatted = String.format(
                                 Locale.getDefault(), "%d %s %d",
@@ -159,35 +152,17 @@ public class EditHealthInfoActivity extends BaseActivity {
         });
     }
 
-    private void updateBloodTypeButtons(Map<Integer, String> bloodTypeMap, String selected,
-                                         ColorStateList glassActive, ColorStateList surfaceList,
-                                         int white, int semiWhite) {
+    private void updateBloodTypeButtons(Map<Integer, String> bloodTypeMap, String selected) {
         for (Map.Entry<Integer, String> entry : bloodTypeMap.entrySet()) {
             Button btn = findViewById(entry.getKey());
-            if (entry.getValue().equals(selected)) {
-                btn.setBackgroundTintList(glassActive);
-                btn.setTextColor(white);
-            } else {
-                btn.setBackgroundTintList(surfaceList);
-                btn.setTextColor(semiWhite);
-            }
+            UiHelper.setChoiceSelected(btn, entry.getValue().equals(selected));
         }
     }
 
-    private void updateGenderButtons(String selected, Button btnMale, Button btnFemale, Button btnOther,
-                                      ColorStateList glassActive, ColorStateList surfaceList,
-                                      int white, int semiWhite) {
-        Button[] buttons = {btnMale, btnFemale, btnOther};
-        String[] labels = {"Male", "Female", "Other"};
-        for (int i = 0; i < buttons.length; i++) {
-            if (labels[i].equals(selected)) {
-                buttons[i].setBackgroundTintList(glassActive);
-                buttons[i].setTextColor(white);
-            } else {
-                buttons[i].setBackgroundTintList(surfaceList);
-                buttons[i].setTextColor(semiWhite);
-            }
-        }
+    private void updateGenderButtons(String selected, Button btnMale, Button btnFemale, Button btnOther) {
+        UiHelper.setChoiceSelected(btnMale, "Male".equals(selected));
+        UiHelper.setChoiceSelected(btnFemale, "Female".equals(selected));
+        UiHelper.setChoiceSelected(btnOther, "Other".equals(selected));
     }
 
     @Nullable

@@ -2,7 +2,7 @@ package com.example.meditrackpro;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Switch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,11 +18,11 @@ public class NotificationSettingsActivity extends BaseActivity {
 
         SharedPreferences prefs = SecurePrefs.get(this, PrefsConstants.NOTIF_PREFS);
 
-        Switch switchDose = findViewById(R.id.switchDoseReminders);
-        Switch switchMissed = findViewById(R.id.switchMissedDose);
-        Switch switchRefill = findViewById(R.id.switchRefill);
-        Switch switchCaregiver = findViewById(R.id.switchCaregiver);
-        Switch switchSound = findViewById(R.id.switchSound);
+        SwitchMaterial switchDose = findViewById(R.id.switchDoseReminders);
+        SwitchMaterial switchMissed = findViewById(R.id.switchMissedDose);
+        SwitchMaterial switchRefill = findViewById(R.id.switchRefill);
+        SwitchMaterial switchCaregiver = findViewById(R.id.switchCaregiver);
+        SwitchMaterial switchSound = findViewById(R.id.switchSound);
 
         // Load saved preferences
         switchDose.setChecked(prefs.getBoolean("dose_reminders", true));

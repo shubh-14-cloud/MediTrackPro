@@ -1,8 +1,6 @@
 package com.example.meditrackpro;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -111,11 +109,9 @@ public class SignUpActivity extends BaseActivity {
 
     private void selectGender(Button selected, String gender, Button... others) {
         selectedGender = gender;
-        selected.setBackgroundTintList(ColorStateList.valueOf(Color.argb(80, 255, 255, 255)));
-        selected.setTextColor(Color.WHITE);
+        UiHelper.setChoiceSelected(selected, true);
         for (Button other : others) {
-            other.setBackgroundTintList(ColorStateList.valueOf(Color.argb(30, 255, 255, 255)));
-            other.setTextColor(Color.argb(160, 255, 255, 255));
+            UiHelper.setChoiceSelected(other, false);
         }
     }
 }

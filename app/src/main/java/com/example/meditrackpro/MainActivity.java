@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -52,10 +56,33 @@ public class MainActivity extends BaseActivity {
         NavController navController = navHostFragment.getNavController();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         NavigationUI.setupWithNavController(bottomNav, navController);
-        AppThemeHelper.applyAccentToBottomNav(this, bottomNav);
 
         requestNotificationPermissionIfNeeded();
         showOnboardingIfNeeded();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Keep the location that gets attached to caregiver alerts fresh while the app is in use.
+        if (LocationHelper.isSharingEnabled(this) && LocationHelper.hasForegroundPermission(this)) {
+            LocationHelper.fetchCurrent(this, null);
+        }
+    }
+
+    /** The bottom bar extends behind the gesture/navigation bar, so it takes the bottom inset itself. */
+    @Override
+    protected void applyWindowInsets() {
+        View content = findViewById(android.R.id.content);
+        View bottomNav = findViewById(R.id.bottom_nav);
+        ViewCompat.setOnApplyWindowInsetsListener(content, (v, insets) -> {
+            Insets bars = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            v.setPadding(bars.left, bars.top, bars.right, 0);
+            bottomNav.setPadding(0, 0, 0, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+        ViewCompat.requestApplyInsets(content);
     }
 
     private void requestNotificationPermissionIfNeeded() {

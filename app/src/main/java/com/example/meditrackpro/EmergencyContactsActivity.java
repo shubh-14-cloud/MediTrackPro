@@ -1,7 +1,6 @@
 package com.example.meditrackpro;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +17,6 @@ public class EmergencyContactsActivity extends BaseActivity {
         setContentView(R.layout.activity_emergency_contacts);
 
         Button btnSave = findViewById(R.id.btnSaveContacts);
-        btnSave.setTextColor(Color.WHITE);
 
         findViewById(R.id.tvBack).setOnClickListener(v -> finish());
 

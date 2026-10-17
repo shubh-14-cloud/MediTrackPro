@@ -8,11 +8,15 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".MediTrackApp"
@@ -46,6 +50,13 @@
         <activity android:name=".AppAppearanceActivity"      android:exported="false" />
         <activity android:name=".CameraActivity"             android:exported="false" />
         <activity android:name=".HealthRecordDetailActivity" android:exported="false" />
+        <activity android:name=".LocationActivity"           android:exported="false" />
+        <activity android:name=".RemediesActivity"           android:exported="false" />
+
+        <!-- Google Maps key, injected from local.properties (MAPS_API_KEY) -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
 
         <receiver android:name=".MedicationAlarmReceiver"   android:exported="false" />
         <receiver android:name=".MissedDoseCheckReceiver"   android:exported="false" />

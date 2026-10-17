@@ -1,18 +1,22 @@
 package com.example.meditrackpro;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class CaregiverSettingsActivity extends BaseActivity {
 
@@ -21,10 +25,22 @@ public class CaregiverSettingsActivity extends BaseActivity {
     private EditText etName;
     private EditText etRelation;
     private EditText etPhone;
-    private Switch switchMissed;
-    private Switch switchSummary;
-    private Switch switchEmergency;
+    private SwitchMaterial switchMissed;
+    private SwitchMaterial switchSummary;
+    private SwitchMaterial switchEmergency;
+    private SwitchMaterial switchLocation;
     private SharedPreferences prefs;
+
+    private final ActivityResultLauncher<String[]> requestLocation =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                if (!LocationHelper.hasForegroundPermission(this)) {
+                    switchLocation.setChecked(false);
+                    Toast.makeText(this, "Location permission is needed to include your location", Toast.LENGTH_LONG).show();
+                } else {
+                    // Warm the cache so the first alert already has a location to send.
+                    LocationHelper.fetchCurrent(this, null);
+                }
+            });
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +55,7 @@ public class CaregiverSettingsActivity extends BaseActivity {
         switchMissed = findViewById(R.id.switchMissedDoseAlert);
         switchSummary = findViewById(R.id.switchDailySummary);
         switchEmergency = findViewById(R.id.switchEmergencyAlert);
+        switchLocation = findViewById(R.id.switchShareLocation);
 
         // Load saved values
         etName.setText(prefs.getString("name", ""));
@@ -47,8 +64,21 @@ public class CaregiverSettingsActivity extends BaseActivity {
         switchMissed.setChecked(prefs.getBoolean("missed_dose", true));
         switchSummary.setChecked(prefs.getBoolean("daily_summary", false));
         switchEmergency.setChecked(prefs.getBoolean("emergency", true));
+        switchLocation.setChecked(prefs.getBoolean("share_location", false)
+                && LocationHelper.hasForegroundPermission(this));
+
+        switchLocation.setOnCheckedChangeListener((button, isChecked) -> {
+            if (isChecked && !LocationHelper.hasForegroundPermission(this)) {
+                requestLocation.launch(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION});
+            }
+        });
 
         findViewById(R.id.tvBack).setOnClickListener(v -> finish());
+
+        findViewById(R.id.btnViewLocation).setOnClickListener(v ->
+                startActivity(new Intent(this, LocationActivity.class)));
 
         findViewById(R.id.btnSaveCaregiver).setOnClickListener(v -> {
             String name = etName.getText().toString().trim();
@@ -98,6 +128,7 @@ public class CaregiverSettingsActivity extends BaseActivity {
                 .putBoolean("missed_dose", switchMissed.isChecked())
                 .putBoolean("daily_summary", switchSummary.isChecked())
                 .putBoolean("emergency", switchEmergency.isChecked())
+                .putBoolean("share_location", switchLocation.isChecked())
                 .putBoolean("active", true)
                 .apply();
 

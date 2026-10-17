@@ -2,11 +2,9 @@ package com.example.meditrackpro;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -16,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Arrays;
 import java.util.concurrent.Executor;
 
 public class LoginActivity extends BaseActivity {
@@ -35,8 +32,7 @@ public class LoginActivity extends BaseActivity {
             SharedPreferences prefs = SecurePrefs.get(this, PrefsConstants.PRIVACY_PREFS);
             if (prefs.getBoolean("biometric", false)) {
                 setContentView(R.layout.activity_login);
-                applyAccentColor();
-                checkBiometric();
+                        checkBiometric();
                 return;
             }
             startActivity(new Intent(this, MainActivity.class));
@@ -45,7 +41,6 @@ public class LoginActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_login);
-        applyAccentColor();
 
         EditText etEmail = findViewById(R.id.etEmail);
         EditText etPassword = findViewById(R.id.etPassword);
@@ -106,20 +101,6 @@ public class LoginActivity extends BaseActivity {
         // Go to Sign Up
         findViewById(R.id.tvGoToSignUp).setOnClickListener(v ->
                 startActivity(new Intent(this, SignUpActivity.class)));
-    }
-
-    private void applyAccentColor() {
-        // Sign in button uses glass style from theme; just ensure text is white
-        Button btnSignIn = findViewById(R.id.btnSignIn);
-        if (btnSignIn != null) {
-            btnSignIn.setTextColor(Color.WHITE);
-        }
-
-        // Text views stay white
-        for (int id : Arrays.asList(R.id.tvForgotPassword, R.id.tvGoToSignUp)) {
-            TextView tv = findViewById(id);
-            if (tv != null) tv.setTextColor(Color.WHITE);
-        }
     }
 
     private void checkBiometric() {

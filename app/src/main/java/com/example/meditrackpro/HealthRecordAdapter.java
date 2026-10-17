@@ -50,54 +50,29 @@ public class HealthRecordAdapter extends ListAdapter<HealthRecord, HealthRecordA
         holder.tvSubtitle.setText(record.getType() + " · " + record.getDate());
         holder.tvStatus.setText(record.getStatus());
 
-        int bgDrawable;
-        int textColor;
-        switch (record.getType()) {
-            case "Lab Result":
-                bgDrawable = R.drawable.pill_accent_bg;
-                textColor = R.color.accent;
-                break;
-            case "Prescription":
-                bgDrawable = R.drawable.pill_blue_bg;
-                textColor = R.color.blue_accent;
-                break;
-            case "Doctor Visit":
-                bgDrawable = R.drawable.pill_purple_bg;
-                textColor = R.color.purple_accent;
-                break;
-            case "Vaccination":
-                bgDrawable = R.drawable.pill_gold_bg;
-                textColor = R.color.gold;
-                break;
-            default:
-                bgDrawable = R.drawable.pill_accent_bg;
-                textColor = R.color.accent;
-        }
-        holder.tvStatus.setBackgroundResource(bgDrawable);
-        holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(textColor, null));
-
-        switch (record.getType()) {
-            case "Lab Result":
-                holder.tvIcon.setText("L");
-                break;
-            case "Prescription":
-                holder.tvIcon.setText("Rx");
-                break;
-            case "Doctor Visit":
-                holder.tvIcon.setText("Dr");
-                break;
-            case "Vaccination":
-                holder.tvIcon.setText("V");
-                break;
-            default:
-                holder.tvIcon.setText("R");
-        }
+        // Short type code shown in the tile; every record uses the same badge look.
+        holder.tvIcon.setText(typeCode(record.getType()));
 
         holder.itemView.setOnClickListener(v -> onClick.accept(record));
         holder.itemView.setOnLongClickListener(v -> {
             onLongClick.accept(record);
             return true;
         });
+    }
+
+    static String typeCode(String type) {
+        switch (type) {
+            case "Lab Result":
+                return "Lab";
+            case "Prescription":
+                return "Rx";
+            case "Doctor Visit":
+                return "Dr";
+            case "Vaccination":
+                return "Vax";
+            default:
+                return "Rec";
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

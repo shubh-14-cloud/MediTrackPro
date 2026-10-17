@@ -1,8 +1,6 @@
 package com.example.meditrackpro;
 
-import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +20,6 @@ import java.util.Map;
 
 public class AddHealthRecordActivity extends BaseActivity {
 
-    private static final ColorStateList GLASS_ACTIVE = ColorStateList.valueOf(Color.argb(80, 255, 255, 255));
-    private static final ColorStateList GLASS_INACTIVE = ColorStateList.valueOf(Color.argb(30, 255, 255, 255));
-    private static final int WHITE = Color.WHITE;
-    private static final int SEMI_WHITE = Color.argb(160, 255, 255, 255);
-
     private HealthViewModel viewModel;
     private String selectedType = "Lab Result";
     private String photoPath = "";
@@ -45,7 +38,6 @@ public class AddHealthRecordActivity extends BaseActivity {
         EditText etStatus = findViewById(R.id.etStatus);
         Button btnSave = findViewById(R.id.btnSaveRecord);
 
-        btnSave.setTextColor(WHITE);
         findViewById(R.id.tvBack).setOnClickListener(v -> finish());
 
         // Show captured photo if opened from camera
@@ -121,13 +113,7 @@ public class AddHealthRecordActivity extends BaseActivity {
     private void updateTypeButtons(Map<Integer, String> typeButtons, int selectedId) {
         for (int id : typeButtons.keySet()) {
             Button btn = findViewById(id);
-            if (id == selectedId) {
-                btn.setBackgroundTintList(GLASS_ACTIVE);
-                btn.setTextColor(WHITE);
-            } else {
-                btn.setBackgroundTintList(GLASS_INACTIVE);
-                btn.setTextColor(SEMI_WHITE);
-            }
+            UiHelper.setChoiceSelected(btn, id == selectedId);
         }
     }
 }

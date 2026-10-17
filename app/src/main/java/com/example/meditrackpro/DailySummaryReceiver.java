@@ -35,12 +35,14 @@ public class DailySummaryReceiver extends BroadcastReceiver {
                 if (dailySummary && total > 0) {
                     String msg = "MediTrack Daily Summary: " + taken + "/" + total
                             + " doses taken today (" + pct + "% adherence). " + missed + " missed.";
+                    msg = LocationHelper.appendLocation(context, msg);
                     CaregiverSmsSender.send(context, msg);
                 }
 
                 // Emergency alert: no doses taken at all today
                 if (emergency && total > 0 && taken == 0) {
                     String msg = "MediTrack EMERGENCY: No medications were taken today. Please check on your patient immediately.";
+                    msg = LocationHelper.appendLocation(context, msg);
                     CaregiverSmsSender.send(context, msg);
                 }
             } catch (Exception e) {

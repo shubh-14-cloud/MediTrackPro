@@ -1,8 +1,5 @@
 package com.example.meditrackpro;
 
-import android.app.AlertDialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,16 +63,12 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         tvDateTime = view.findViewById(R.id.tvDateTime);
-        tvDateTime.setTextColor(Color.WHITE);
 
         tvAdherence = view.findViewById(R.id.tvAdherence);
-        tvAdherence.setTextColor(Color.WHITE);
 
         tvDoseProgress = view.findViewById(R.id.tvDoseProgress);
-        tvDoseProgress.setTextColor(Color.WHITE);
 
         progressBar = view.findViewById(R.id.progressDoses);
-        progressBar.setProgressTintList(ColorStateList.valueOf(Color.WHITE));
 
         alertCard = view.findViewById(R.id.alertCard);
         cardEmptyDoses = view.findViewById(R.id.cardEmptyDoses);
@@ -165,10 +159,12 @@ public class HomeFragment extends Fragment {
                     TextView markBtn = card.findViewById(R.id.tvMarkTaken);
                     if (isTaken) {
                         markBtn.setText("Taken");
-                        markBtn.setAlpha(0.5f);
+                        markBtn.setBackgroundResource(R.drawable.bg_button_tonal);
+                        markBtn.setTextColor(UiHelper.color(requireContext(), R.color.accent));
                     } else {
                         markBtn.setText("Take");
-                        markBtn.setAlpha(1.0f);
+                        markBtn.setBackgroundResource(R.drawable.bg_button_filled);
+                        markBtn.setTextColor(UiHelper.color(requireContext(), R.color.on_accent));
                     }
                     markBtn.setOnClickListener(v -> viewModel.markDoseTaken(med, slot));
 
@@ -179,6 +175,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupAdherenceCard(View view) {
+        view.findViewById(R.id.cardRemedies).setOnClickListener(v ->
+                startActivity(new android.content.Intent(requireContext(), RemediesActivity.class)));
+
         view.findViewById(R.id.btnRemind).setOnClickListener(v -> {
             List<Medicine> medicines = viewModel.getAllMedicines().getValue();
             if (medicines == null || medicines.isEmpty()) return;

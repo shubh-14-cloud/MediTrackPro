@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,9 +33,9 @@ public class PrivacySettingsActivity extends BaseActivity {
         auth = FirebaseAuth.getInstance();
 
         SharedPreferences prefs = SecurePrefs.get(this, PrefsConstants.PRIVACY_PREFS);
-        Switch switchAnalytics = findViewById(R.id.switchAnalytics);
-        Switch switchBiometric = findViewById(R.id.switchBiometric);
-        Switch switchBackup = findViewById(R.id.switchBackup);
+        SwitchMaterial switchAnalytics = findViewById(R.id.switchAnalytics);
+        SwitchMaterial switchBiometric = findViewById(R.id.switchBiometric);
+        SwitchMaterial switchBackup = findViewById(R.id.switchBackup);
 
         // Load saved prefs
         switchAnalytics.setChecked(prefs.getBoolean("analytics", true));

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- The camera screen is always dark, so it uses fixed colours instead of the theme palette. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,56 +10,45 @@
         android:id="@+id/cameraPreview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/captureBar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/captureBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="112dp"
         android:background="@color/overlay_dark_80"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tvCameraBack"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="24dp"
+            android:contentDescription="@string/cd_cancel"
+            android:gravity="center_vertical"
             android:text="Cancel"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            android:contentDescription="@string/cd_cancel" />
+            android:textColor="@color/camera_text"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
-            xmlns:app2="http://schemas.android.com/apk/res-auto"
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnCapture"
             android:layout_width="68dp"
             android:layout_height="68dp"
+            android:layout_gravity="center"
             android:contentDescription="@string/cd_take_photo"
-            app2:cardBackgroundColor="#40FFFFFF"
-            app2:cardCornerRadius="34dp"
-            app2:cardElevation="4dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text=""
-                android:textSize="28sp" />
-        </androidx.cardview.widget.CardView>
+            app:cardBackgroundColor="@color/camera_text"
+            app:cardCornerRadius="34dp"
+            app:strokeColor="#66FFFFFF"
+            app:strokeWidth="4dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:text=""
-            android:textSize="14sp" />
-
-    </LinearLayout>
+    </FrameLayout>
 
     <!-- Captured image preview overlay -->
     <LinearLayout
@@ -67,48 +56,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/overlay_dark_87"
-        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivCaptured"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/cd_captured_image" />
+            android:contentDescription="@string/cd_captured_image"
+            android:scaleType="fitCenter" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal"
             android:padding="20dp">
 
             <Button
                 android:id="@+id/btnRetake"
+                style="@style/Widget.App.Button.Secondary"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:text="Retake"
-                android:textColor="#FFFFFF" />
+                android:textColor="@color/camera_text"
+                app:rippleColor="@color/camera_text"
+                app:strokeColor="#99FFFFFF" />
 
             <Button
                 android:id="@+id/btnUsePhoto"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:layout_weight="1"
-                android:text="Use Photo"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:text="Use Photo" />
 
         </LinearLayout>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

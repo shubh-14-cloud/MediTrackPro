@@ -1,6 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+}
+
+// The Google Maps key is read from local.properties (git-ignored) or -PMAPS_API_KEY.
+// Without a key the app still builds; the map screen just shows a notice instead of a map.
+val mapsApiKey: String = run {
+    val props = Properties()
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { props.load(it) }
+    props.getProperty("MAPS_API_KEY") ?: (project.findProperty("MAPS_API_KEY") as String?) ?: ""
 }
 
 android {
@@ -15,6 +26,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        buildConfigField("boolean", "MAPS_KEY_CONFIGURED", mapsApiKey.isNotBlank().toString())
     }
 
     buildTypes {
@@ -81,6 +95,10 @@ dependencies {
 
     // ML Kit text recognition (on-device OCR for scan feature)
     implementation("com.google.mlkit:text-recognition:16.0.1")
+
+    // Location + Google Maps (patient location shared with the caregiver)
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Timber logging
     implementation("com.jakewharton.timber:timber:5.0.1")

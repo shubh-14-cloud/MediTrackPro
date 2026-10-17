@@ -1,8 +1,6 @@
 package com.example.meditrackpro;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MedicationsFragment extends Fragment {
-
-    private static final ColorStateList GLASS_ACTIVE = ColorStateList.valueOf(Color.argb(80, 255, 255, 255));
-    private static final ColorStateList GLASS_INACTIVE = ColorStateList.valueOf(Color.argb(30, 255, 255, 255));
-    private static final int WHITE = Color.WHITE;
-    private static final int SEMI_WHITE = Color.argb(160, 255, 255, 255);
 
     @Nullable
     @Override
@@ -49,15 +42,15 @@ public class MedicationsFragment extends Fragment {
         List<Button> allButtons = Arrays.asList(btnToday, btnAll, btnRefill);
         List<View> allLayouts = Arrays.asList(layoutToday, layoutAll, layoutRefill);
 
-        btnToday.setBackgroundTintList(GLASS_ACTIVE);
-        btnToday.setTextColor(WHITE);
+        UiHelper.setChoiceSelected(btnToday, true);
+        UiHelper.setChoiceSelected(btnAll, false);
+        UiHelper.setChoiceSelected(btnRefill, false);
 
         btnToday.setOnClickListener(v -> showTab(btnToday, layoutToday, allButtons, allLayouts));
         btnAll.setOnClickListener(v -> showTab(btnAll, layoutAll, allButtons, allLayouts));
         btnRefill.setOnClickListener(v -> showTab(btnRefill, layoutRefill, allButtons, allLayouts));
 
         Button btnAddMed = view.findViewById(R.id.btnAddMed);
-        btnAddMed.setTextColor(WHITE);
         btnAddMed.setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), AddMedicineActivity.class)));
 
@@ -120,14 +113,11 @@ public class MedicationsFragment extends Fragment {
 
     private void showTab(Button activeBtn, View activeLayout, List<Button> allButtons, List<View> allLayouts) {
         for (Button btn : allButtons) {
-            btn.setBackgroundTintList(GLASS_INACTIVE);
-            btn.setTextColor(SEMI_WHITE);
+            UiHelper.setChoiceSelected(btn, btn == activeBtn);
         }
         for (View layout : allLayouts) {
             layout.setVisibility(View.GONE);
         }
-        activeBtn.setBackgroundTintList(GLASS_ACTIVE);
-        activeBtn.setTextColor(WHITE);
         activeLayout.setVisibility(View.VISIBLE);
     }
 

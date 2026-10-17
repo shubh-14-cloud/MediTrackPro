@@ -1,7 +1,5 @@
 package com.example.meditrackpro;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +47,6 @@ public class RefillAdapter extends ListAdapter<Medicine, RefillAdapter.ViewHolde
         int pct = (int) ((med.getRefillDays() / DAYS_IN_MONTH) * 100);
         pct = Math.max(0, Math.min(100, pct));
         holder.progress.setProgress(pct);
-        holder.progress.setProgressTintList(ColorStateList.valueOf(Color.WHITE));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

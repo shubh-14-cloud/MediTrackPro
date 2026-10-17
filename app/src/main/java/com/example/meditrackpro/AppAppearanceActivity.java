@@ -2,22 +2,21 @@ package com.example.meditrackpro;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AppAppearanceActivity extends BaseActivity {
 
-    private String selectedTheme = "system";
+    private String selectedTheme = AppThemeHelper.DEFAULT_THEME;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +25,7 @@ public class AppAppearanceActivity extends BaseActivity {
         setContentView(R.layout.activity_app_appearance);
 
         SharedPreferences prefs = SecurePrefs.get(this, PrefsConstants.APPEARANCE_PREFS);
-        selectedTheme = prefs.getString("theme", "system");
-        if (selectedTheme == null) selectedTheme = "system";
+        selectedTheme = AppThemeHelper.getSavedTheme(this);
 
         TextView tvSizeValue = findViewById(R.id.tvTextSizeValue);
         SeekBar seekBar = findViewById(R.id.seekTextSize);
@@ -53,26 +51,23 @@ public class AppAppearanceActivity extends BaseActivity {
         });
 
         // ── THEME ──
-        CardView cardDark = findViewById(R.id.cardDarkTheme);
-        CardView cardLight = findViewById(R.id.cardLightTheme);
-        CardView cardSystem = findViewById(R.id.cardSystemTheme);
+        MaterialCardView cardDark = findViewById(R.id.cardDarkTheme);
+        MaterialCardView cardLight = findViewById(R.id.cardLightTheme);
+        MaterialCardView cardSystem = findViewById(R.id.cardSystemTheme);
 
         updateThemeSelection(cardDark, cardLight, cardSystem);
 
         cardDark.setOnClickListener(v -> {
-            selectedTheme = "dark";
+            selectedTheme = AppThemeHelper.THEME_DARK;
             updateThemeSelection(cardDark, cardLight, cardSystem);
-            Toast.makeText(this, "Dark theme selected", Toast.LENGTH_SHORT).show();
         });
         cardLight.setOnClickListener(v -> {
-            selectedTheme = "light";
+            selectedTheme = AppThemeHelper.THEME_LIGHT;
             updateThemeSelection(cardDark, cardLight, cardSystem);
-            Toast.makeText(this, "Light theme selected", Toast.LENGTH_SHORT).show();
         });
         cardSystem.setOnClickListener(v -> {
-            selectedTheme = "system";
+            selectedTheme = AppThemeHelper.THEME_SYSTEM;
             updateThemeSelection(cardDark, cardLight, cardSystem);
-            Toast.makeText(this, "System theme selected", Toast.LENGTH_SHORT).show();
         });
 
         // ── BACK ──
@@ -85,9 +80,9 @@ public class AppAppearanceActivity extends BaseActivity {
                     .putString("theme", selectedTheme)
                     .apply();
 
-            Toast.makeText(this, "Appearance saved! Restarting...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Appearance saved", Toast.LENGTH_SHORT).show();
 
-            // Restart the whole app to apply all changes
+            // Restart the whole app so the theme and text size apply everywhere
             Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -98,12 +93,10 @@ public class AppAppearanceActivity extends BaseActivity {
         });
     }
 
-    private void updateThemeSelection(CardView cardDark, CardView cardLight, CardView cardSystem) {
-        int selectedAlpha = Color.argb(80, 255, 255, 255);
-        int defaultAlpha = Color.argb(20, 255, 255, 255);
-
-        cardDark.setCardBackgroundColor("dark".equals(selectedTheme) ? selectedAlpha : defaultAlpha);
-        cardLight.setCardBackgroundColor("light".equals(selectedTheme) ? selectedAlpha : defaultAlpha);
-        cardSystem.setCardBackgroundColor("system".equals(selectedTheme) ? selectedAlpha : defaultAlpha);
+    private void updateThemeSelection(MaterialCardView cardDark, MaterialCardView cardLight,
+                                       MaterialCardView cardSystem) {
+        UiHelper.setCardSelected(cardDark, AppThemeHelper.THEME_DARK.equals(selectedTheme));
+        UiHelper.setCardSelected(cardLight, AppThemeHelper.THEME_LIGHT.equals(selectedTheme));
+        UiHelper.setCardSelected(cardSystem, AppThemeHelper.THEME_SYSTEM.equals(selectedTheme));
     }
 }

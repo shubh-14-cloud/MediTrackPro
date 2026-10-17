@@ -1,7 +1,6 @@
 package com.example.meditrackpro;
 
 import android.app.TimePickerDialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,11 +41,10 @@ public class AddMedicineActivity extends BaseActivity {
         Button btnSave = findViewById(R.id.btnSaveMedicine);
         TextView tvTitle = findViewById(R.id.tvBack);
 
-        btnSave.setTextColor(Color.WHITE);
         tvTitle.setOnClickListener(v -> finish());
 
         btnAddTime.setOnClickListener(v -> {
-            TimePickerDialog dialog = new TimePickerDialog(this, (picker, hour, minute) -> {
+            TimePickerDialog dialog = new TimePickerDialog(this, R.style.Theme_App_Picker, (picker, hour, minute) -> {
                 String formatted = String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
                 if (!selectedTimes.contains(formatted)) {
                     selectedTimes.add(formatted);

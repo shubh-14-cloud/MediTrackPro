@@ -38,6 +38,7 @@ public class MissedDoseCheckReceiver extends BroadcastReceiver {
 
                 if (log == null || !log.isTaken()) {
                     String msg = "MediTrack Alert: " + medName + " (" + finalDose + ") scheduled at " + timeSlot + " was not taken.";
+                    msg = LocationHelper.appendLocation(context, msg);
                     CaregiverSmsSender.send(context, msg);
                 }
             } catch (Exception e) {

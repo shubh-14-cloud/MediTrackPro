@@ -82,7 +82,7 @@ public final class CaregiverSmsSender {
                     public void onReceive(Context ctx, Intent i) {
                         switch (getResultCode()) {
                             case Activity.RESULT_OK:
-                                toast(ctx, "Test SMS sent successfully to " + finalPhone);
+                                toast(ctx, "SMS sent successfully to " + finalPhone);
                                 break;
                             case SmsManager.RESULT_ERROR_NO_SERVICE:
                                 toast(ctx, "SMS failed: no cellular service");

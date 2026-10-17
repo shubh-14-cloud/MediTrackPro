@@ -1,7 +1,6 @@
 package com.example.meditrackpro;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +41,6 @@ public class HealthRecordDetailActivity extends BaseActivity {
         Button btnSave = findViewById(R.id.btnDetailSave);
         Button btnDelete = findViewById(R.id.btnDetailDelete);
 
-        btnSave.setTextColor(Color.WHITE);
         tvBack.setOnClickListener(v -> finish());
 
         int recordId = getIntent().getIntExtra(EXTRA_RECORD_ID, -1);
@@ -96,42 +94,7 @@ public class HealthRecordDetailActivity extends BaseActivity {
         tvNotes.setText(record.getNotes().isEmpty() ? "No notes" : record.getNotes());
         tvStatus.setText(record.getStatus());
 
-        switch (record.getType()) {
-            case "Lab Result":
-                tvIcon.setText("🧪");
-                break;
-            case "Prescription":
-                tvIcon.setText("📋");
-                break;
-            case "Doctor Visit":
-                tvIcon.setText("🏥");
-                break;
-            case "Vaccination":
-                tvIcon.setText("💉");
-                break;
-            default:
-                tvIcon.setText("📄");
-        }
-
-        int bgDrawable;
-        switch (record.getType()) {
-            case "Lab Result":
-                bgDrawable = R.drawable.pill_accent_bg;
-                break;
-            case "Prescription":
-                bgDrawable = R.drawable.pill_blue_bg;
-                break;
-            case "Doctor Visit":
-                bgDrawable = R.drawable.pill_purple_bg;
-                break;
-            case "Vaccination":
-                bgDrawable = R.drawable.pill_gold_bg;
-                break;
-            default:
-                bgDrawable = R.drawable.pill_accent_bg;
-        }
-        tvStatus.setBackgroundResource(bgDrawable);
-        tvStatus.setTextColor(Color.WHITE);
+        tvIcon.setText(HealthRecordAdapter.typeCode(record.getType()));
 
         etStatus.setText(record.getStatus());
         etNotes.setText(record.getNotes());
